@@ -1,25 +1,44 @@
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-
 <?php
 
-    if (isset($_GET['lastName'], $_GET['firstName'])) {
-        echo "<p>bienvenue {$_GET['firstName']}  {$_GET['lastName']} </p>";
-    }
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    header('location: ./index.php');
+    die();
+}
+
+if (
+    !isset(
+        $_GET['firstName'],
+        $_GET['lastName'],
+    )
+) {
+    header('location: ./index.php');
+    return;
+}
+
+if (
+    empty($_GET['firstName']) ||
+    empty($_GET['lastName'])
+) {
+    header('location: ./index.php');
+    return;
+}
+
+// input sanitization
+$firstName = htmlspecialchars(trim($_GET['firstName']));
+$lastName = htmlspecialchars(trim($_GET['lastName']));
 
 
-    ?>
-    
-</body>
-</html>
+// a remplir en fonction de vos prerequis
+if(
+    strlen($firstName) > 50 ||
+    strlen($lastName) > 50
+) {
+    header('location: ./index.php');
+    return;
+}
+
+
+
+//  Mon code
+
+var_dump($firstName, $lastName);
