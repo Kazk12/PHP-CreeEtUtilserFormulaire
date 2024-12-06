@@ -1,102 +1,53 @@
-<?php
-
-
-
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('location: ./index.php');
-    die();
-}
-
-if (
-    !isset(
-        $_POST['firstName'],
-        $_POST['lastName'],
-    )
-) {
-    header('location: ./index.php');
-    return;
-}
-
-if (
-    empty($_POST['firstName']) ||
-    empty($_POST['lastName'])
-) {
-    header('location: ./index.php');
-    return;
-}
-
-// input sanitization
-$firstName = htmlspecialchars(trim($_POST['firstName']));
-$lastName = htmlspecialchars(trim($_POST['lastName']));
-
-
-// a remplir en fonction de vos prerequis
-if(
-    strlen($firstName) > 50 ||
-    strlen($lastName) > 50
-) {
-    header('location: ./index.php');
-    return;
-}
-
-
-
-//  Mon code
-
-
-
-
-
-?>
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
 
 
-<form action="./index.php" method="post">
-        <label for="Civilite"> Votre Genre :</label>
-        <select name="Genre" id="Genre">
-            <option value="">--Choisi.e ton genre</option>
-            <option value="Mme">Mme</option>
-            <option value="Mr">Mr</option>
+    <?php
+
+    if (isset($_POST['gender'], $_POST["lastName"], $_POST["firstName"])) {
+
+        $gender = htmlspecialchars(trim($_POST['gender']));
+        $lastName = htmlspecialchars(trim($_POST['lastName']));
+        $firstName = htmlspecialchars(trim($_POST['firstName']));
+
+        if (!empty($_POST["lastName"]) && !empty($_POST["firstName"])) {
+            echo "Bonjour {$gender} {$firstName} {$lastName} ";
+            exit;
+        } else {
+            echo '<p style="color: red">Il faut remplir tous les champs !</p>';
+        }
+    }
+
+    ?>
+
+    <form action="index.php" method="post">
+
+        <label for="gender">Civilité</label>
+        <select name="gender" id="gender">
+            <option value="Mr" <?php if(isset($gender)) if($gender === "Mr") echo "selected" ?> >Mr</option>
+            <option value="Mme"<?php if(isset($gender)) if($gender === "Mme") echo "selected" ?> >Mme</option>
         </select>
 
+        <label for="lastName">Nom</label>
+        <input type="text" name="lastName" id="lastName"  value="<?php if(isset($lastName)) if(!empty($lastName)) echo $lastName   ?>" />
 
-        <label for="firstName"> Prenom :</label>
-        <input type="text" name="firstName" id="firstName" required maxlength="10">
+        <label for="firstName">Prénom</label>
+        <input type="text" name="firstName" id="firstName" value="<?php if(isset($firstName)) if(!empty($firstName)) echo $firstName   ?>">
 
-        <label for="lastName"> Nom de famille :</label>
-        <input type="text" name="lastName" id="lastName">
-
-        <input type="submit" value="Envoyer">
+        <input type="submit" value="envoyer">
 
     </form>
 
-<?php 
-if (isset($_POST['lastName'], $_POST['firstName'] , $_POST['Genre'])) {
-    echo "<p>bienvenue  {$_POST['Genre']} {$_POST['firstName']}  {$_POST['lastName']}   </p>";
-} 
 
-?>
 
-    
 </body>
+
 </html>
